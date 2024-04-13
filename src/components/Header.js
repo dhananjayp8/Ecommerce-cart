@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React,{useEffect, useState} from 'react'
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Menu from '@mui/material/Menu';
@@ -12,6 +12,8 @@ import { UseDispatch } from 'react-redux';
 import Table from 'react-bootstrap/Table'
 function Header() {
     
+
+    const [price,setPrice]=useState(0);
     const getData=useSelector((state)=>state.cartReducer.carts);
     console.log(getData);
 
@@ -28,6 +30,17 @@ function Header() {
     const dlt=(id)=>{
         dispatch(DLT(id))
     }
+
+    const total=()=>{
+        let price=0;
+        getData.map((ele,k)=>{
+            price=ele.price + price
+        });
+        setPrice(price);
+    }
+    useEffect(()=>{
+      total();
+    },[total]);
       return (
         <>
         <Navbar  bg="dark" variant='dark'>
@@ -98,7 +111,7 @@ function Header() {
                                             )
                                         })
                                     }
-                                                                        <p className='text-center'>Total :₹300</p>
+                                                                        <p className='text-center'>Total :{price}</p>
                                 </tbody>
                             </Table>
                         </div>:
